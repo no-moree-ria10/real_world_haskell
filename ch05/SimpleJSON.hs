@@ -1,8 +1,22 @@
 --file: ch05/SimpleJSON.hs
+-- modelue declaration
+module SimpleJSON
+       (
+         JValue(..)
+       , getString
+       , getInt
+       , getDouble
+       , getBool
+       ,getObject    
+       , getArray
+       , isNull
+       )where
+
 
 data JValue = JString String | JNumber Double | JBool Bool | JNull | JObject [ ( String, JValue ) ] | JArray [JValue] 
                                                                                                       deriving (Eq, Ord, Show)
 
+--getter
 getString :: JValue -> Maybe String
 getString (JString s) = Just s
 getString _ = Nothing
@@ -23,3 +37,5 @@ getArray(JArray a) = Just a
 getArray _ = Nothing
 
 isNull v = v == JNull
+--end
+
