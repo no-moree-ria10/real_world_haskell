@@ -9,8 +9,8 @@ renderJValue :: JValue -> String
 
 renderJValue(JString s) = show s
 renderJValue(JNumber n) = show n 
-renderJValue(JValue True) = "true"
-renderJValue(JValue False) = "false"
+renderJValue(JBool True) = "true"
+renderJValue(JBool False) = "false"
 renderJValue JNull = "null"
 
 renderJValue(JObject o) = "{" ++ pairs o ++ "}"
