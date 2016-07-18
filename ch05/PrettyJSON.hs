@@ -18,7 +18,7 @@ renderJValue (JBool False) = text "false"
 renderJValue JNull = text "null"
 renderJValue (JNumber num) = double num
 renderJValue (JString str) = string str
-renderJValue (JArray a) = series '[' ']' renderJValue ary
+renderJValue (JArray a) = series '[' ']' renderJValue a
 renderJValue (JObject o) = series '{' '}' field o
   where field (name, val) = string name
                             <> text ": "
@@ -32,15 +32,6 @@ string = enclose '"' '"' . hcat . map oneChar
 --Doc値を開き文字と閉じ文字でくくる         
 enclose:: Char -> Char -> Doc -> Doc
 enclose left right x = char left <> x <> char right
---Doc値に対する連結演算子(:)
-(<>):: Doc -> Doc -> Doc
-a <> b = undefined
---一文字をDoc値に変換
-char:: Char -> Doc
-char r = undefined
---[Doc]を一つのDocに連結(concat)
-hcat ::[Doc] -> Doc
-hcat xs = undefined
 --ここの文字列をエスケープするか表示可能形式に変換
 oneChar:: Char -> Doc
 oneChar c = case lookup c simpleEscapes of Just r -> text r
