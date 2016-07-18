@@ -7,6 +7,7 @@ import Data.Bits(shiftR, (.&.))
 import Data.Char(ord)
 --data type Doc
 --data Doc = ToBeDefined deriving(Show)
+--[start]String -> Doc変換関数
 --Doc文字列はクォートされた文字の列
 string:: String -> Doc
 string = enclose '"' '"' . hcat . map oneChar
@@ -50,3 +51,10 @@ astral :: Int -> Doc
 astral n = smallHex (a + 0xd800) <> smallHex (b + 0xdc00)
   where a = ( n `shiftR` 10) .&. 0x3ff -- 10 = 0x001100
         b = n .&. 0x3ff
+        
+--[end]
+
+--[start]配列とオブジェクトのプリティプリンタ
+--配列オブジェクト共通のプリンタ構造（ { or [ , 中身 , ] or })
+series :: Char -> Char -> (a -> Doc) -> [a] -> Doc
+series open close item = enclose open close . fsep . punctuate ( char ','), map item

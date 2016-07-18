@@ -12,3 +12,7 @@ renderJValue JNull = text "null"
 renderJValue (JNumber num) = double num
 renderJValue (JString str) = string str
 
+puncuate:: Doc -> [Doc] -> [Doc]
+punctuate p [] = []
+punctuate p [d] = [d]
+punctuate p (d:ds) = (d <> p) : punctuate p ds
