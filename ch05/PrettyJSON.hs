@@ -8,8 +8,21 @@ import Numeric(showHex)
 import Data.Bits(shiftR, (.&.))
 import Data.Char(ord)
 import SimpleJSON(JValue(..))
+import Prettyfy
 --data type Doc
 --data Doc = ToBeDefined deriving(Show)
+--renderJvalue
+renderJValue :: JValue -> Doc
+renderJValue (JBool True) = text "true"
+renderJValue (JBool False) = text "false"
+renderJValue JNull = text "null"
+renderJValue (JNumber num) = double num
+renderJValue (JString str) = string str
+renderJValue (JArray a) = series '[' ']' renderJValue ary
+renderJValue (JObject o) = series '{' '}' field o
+  where field (name, val) = string name
+                            <> text ": "
+                            <> renderJValue val
 
 --[start]String -> Doc変換関数
 --Doc文字列はクォートされた文字の列
@@ -61,4 +74,4 @@ astral n = smallHex (a + 0xd800) <> smallHex (b + 0xdc00)
 --[start]配列とオブジェクトのプリティプリンタ
 --配列オブジェクト共通のプリンタ構造（ { or [ , 中身 , ] or })
 series :: Char -> Char -> (a -> Doc) -> [a] -> Doc
-series open close item = enclose open close . fsep . punctuate ( char ','), map item
+series open close item = enclose open close . fsep . punctuate ( char ',') . map item

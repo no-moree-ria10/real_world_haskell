@@ -15,5 +15,5 @@ text str = undefined
 double :: Double -> Doc
 double num = undefined --undefinedはどこの値にもなれるが、評価しようとすると例外を発生させる。
 
-fsep ::[Dox] ->Doc
+fsep ::[Doc] ->Doc
 fsep xs = undefined --Doc値のリストを合成し、出力が単一行に入りきらない場合行を折り返す。
