@@ -37,11 +37,16 @@ hexEscape
 --smallHex 文字コードをunicode文字に変換し、docに入れる。でも0xffffまでしか表現できない！！（0x10ffffまでほしい) 0xffff以上を表現するには、2つにビットを分割する必要がある
 smallHex::Int -> Doc
 smallHex x = text "\\u"
-             <> text ( replicate ( 4 - length h ) 'o' )
+             <> text ( replicate ( 4 - length h ) '0' )
              <> text h
   where h = showHex x "" --showHex: 数の16進数表記を返す
         
---
+--6桁の以上の文字コードをぶんかつしてエンコーディング
+astral :: Int -> Doc
+astral n = smallHex (a + 0xd800) <> smallHex (b + 0xdc00)
+  where a = ( n `shiftR` 10) .&. 0x3ff -- 10 = 0x001100
+        b - n .&. 0x3ff
+
 
 
 
