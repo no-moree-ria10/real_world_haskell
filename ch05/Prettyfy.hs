@@ -5,7 +5,7 @@ module Prettyfy where --これつけないとmainファイルだと思われて�
 import SimpleJSON 
 import PrettyStub --TODO:スタブを本番にする
         
-puncuate:: Doc -> [Doc] -> [Doc]
+punctuate:: Doc -> [Doc] -> [Doc]
 punctuate p [] = []
 punctuate p [d] = [d]
 punctuate p (d:ds) = (d <> p) : punctuate p ds
