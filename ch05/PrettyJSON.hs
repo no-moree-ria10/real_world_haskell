@@ -1,29 +1,15 @@
 -- file: ch05/PrettyJSON.hs
-module PrettyJSON where
+module PrettyJSON(
+  renderJValue
+  )where
 --import
 import PrettyStub
 import Numeric(showHex)
 import Data.Bits(shiftR, (.&.))
 import Data.Char(ord)
+import SimpleJSON(JValue(..))
 --data type Doc
 --data Doc = ToBeDefined deriving(Show)
-renderJValue :: JValue -> Doc
-renderJValue (JBool True) = text "true"
-renderJValue (JBool False) = text "false"
-renderJValue JNull = text "null"
-renderJValue (JNumber num) = double num
-renderJValue (JString str) = string str
-renderJValue (JArray a) = series '[' ']' renderJValue ary
-renderJValue (JObject o) = series '{' '}' field o
-  where field (name, val) = string name
-                            <> text ": "
-                            <> renderJValue val
-
-        
-puncuate:: Doc -> [Doc] -> [Doc]
-punctuate p [] = []
-punctuate p [d] = [d]
-punctuate p (d:ds) = (d <> p) : punctuate p ds
 
 --[start]String -> Doc変換関数
 --Doc文字列はクォートされた文字の列
