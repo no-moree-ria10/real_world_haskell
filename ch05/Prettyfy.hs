@@ -11,7 +11,13 @@ renderJValue (JBool False) = text "false"
 renderJValue JNull = text "null"
 renderJValue (JNumber num) = double num
 renderJValue (JString str) = string str
+renderJValue (JArray a) = series '[' ']' renderJValue ary
+renderJValue (JObject o) = series '{' '}' field o
+  where field (name, val) = string name
+                            <> text ": "
+                            <> renderJValue val
 
+        
 puncuate:: Doc -> [Doc] -> [Doc]
 punctuate p [] = []
 punctuate p [d] = [d]
