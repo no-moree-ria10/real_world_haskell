@@ -5,10 +5,36 @@ module Prettyfy where --これつけないとmainファイルだと思われて�
 data Doc = Empty 
            | Char  Char
            |Text String
-           |Line
-           |Concat Doc Doc
-           |Union Doc Doc
+           |Line  -- imply \n 
+           |Concat Doc Doc --tree
+           |Union Doc Doc -- tree
 
+--constructer 
+empty :: Doc
+empty = Empty
+
+char :: Char -> Doc
+char c = Char c
+
+text :: String -> Doc
+text "" = Empty
+text t = Text t
+
+double :: Double -> Doc
+double d = text ( show d )             
+
+line :: Doc           
+line = Line
+
+--Doc値に対する連結演算子(:)
+(<>):: Doc -> Doc -> Doc
+--(Text t) <> (Text t') = text ( t ++ t')
+--(Char c) <> (Text t) = text (c : t)
+--(Text t) <> (Char c) = text (
+Empty <> y = y
+x <> Empty = x
+x <> y = x `Concat` y
+       
 --doc値の区切り文字を入れる。  
 punctuate:: Doc -> [Doc] -> [Doc]
 punctuate p [] = []
@@ -18,21 +44,10 @@ punctuate p (d:ds) = (d <> p) : punctuate p ds
 
 
 --Stubs                     
-text:: String->Doc
-text str = undefined
-
-double :: Double -> Doc
-double num = undefined --undefinedはどこの値にもなれるが、評価しようとすると例外を発生させる。
 
 fsep ::[Doc] ->Doc
 fsep xs = undefined --Doc値のリストを合成し、出力が単一行に入りきらない場合行を折り返す。
 
---Doc値に対する連結演算子(:)
-(<>):: Doc -> Doc -> Doc
-a <> b = undefined
---一文字をDoc値に変換
-char:: Char -> Doc
-char r = undefined
 --[Doc]を一つのDocに連結(concat)
 hcat ::[Doc] -> Doc
 hcat xs = undefined
