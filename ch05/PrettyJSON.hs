@@ -1,12 +1,10 @@
 -- file: ch05/PrettyJSON.hs
+--Prettyfyのモジュールを使ったAPIを使ったrenderJValueの新しい定義を先に作った。これを満たすAPIを作る
 module PrettyJSON(
   renderJValue
   )where
 --import
 import PrettyStub
-import Numeric(showHex)
-import Data.Bits(shiftR, (.&.))
-import Data.Char(ord)
 import SimpleJSON(JValue(..))
 import Prettyfy(Doc , (<>), char, double, fsep, hcat, punctuate, text, compact, pretty)
 --data type Doc
