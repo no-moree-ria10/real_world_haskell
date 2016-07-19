@@ -53,8 +53,29 @@ x </> y = x <> softline <> y
 softline :: Doc  --柔らかい改行
 softline = group line
 
-group = undefined           
-           
+--union構成子を用いることでドキュメントの選択肢（改行入れる/入れない)を２つ持つ。出力時に実際に開業するかのロジックを入れる
+group :: Doc -> Doc           
+group x = flatten x `Union` x 
+--左側の要素が常に右より同じ幅もしくは広い幅になる。
+flatten :: Doc -> Doc 
+flatten (x `Concat` y) = flatten x `Concat` flatten y
+flatten Line = Char ' '
+flatten (x `Union` _ ) = flatten x 
+flatten other = other 
+
+compact :: [Doc] -> String                
+compact x = transform x
+  where transform [] = ""
+        transform (d:ds) = 
+          case d of
+            Empty -> transform ds
+            Char c -> c : transform ds
+            Text s -> s ++ transform ds
+            Line -> '\n' : transform ds
+            a `Concat` b -> transform(a:b:ds)
+            _ `Union` b -> transform(b:ds)
+
+        
 --doc値の区切り文字を入れる。  
 punctuate:: Doc -> [Doc] -> [Doc]
 punctuate p [] = []
