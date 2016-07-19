@@ -92,9 +92,13 @@ pretty width x = best 0 [x]
             where nicest col a b | (width - least) `fits` a = a 
                                  | otherwise = b
                     where least = min width col
-
+--文字列が与えられたカラム幅に収まるかどうか
 fits :: Int -> String-> Bool
-fits = undefined
+w `fits` _ | w < 0 = False --収まらない->改行のある方を選択
+w `fits` "" = True
+w `fits` ('\n' : _) = True
+w `fits` (c : cs) = (w-1) `fits` cs
+
         
 --doc値の区切り文字を入れる。  
 punctuate:: Doc -> [Doc] -> [Doc]
