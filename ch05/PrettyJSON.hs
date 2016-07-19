@@ -5,6 +5,9 @@ module PrettyJSON(
   )where
 --import
 import SimpleJSON(JValue(..))
+import Numeric(showHex)
+import Data.Bits(shiftR, (.&.))
+import Data.Char(ord)  
 import Prettyfy(Doc , (<>), char, double, fsep, hcat, punctuate, text, compact)--, pretty)
 --data type Doc
 --data Doc = ToBeDefined deriving(Show)
