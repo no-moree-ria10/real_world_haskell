@@ -8,7 +8,7 @@ data Doc = Empty
            |Line  -- imply \n 
            |Concat Doc Doc --tree
            |Union Doc Doc -- tree
-
+            deriving(Show)
 --constructer 
 empty :: Doc
 empty = Empty
@@ -63,8 +63,9 @@ flatten Line = Char ' '
 flatten (x `Union` _ ) = flatten x 
 flatten other = other 
 
-compact :: [Doc] -> String                
-compact x = transform x
+--transform で x::Docをスタックに入れ、Comcat v1 v2があった場合はスタックに積む。文字・文字列・改行文字をそれぞれ文字に置き換えながらスタックが空になるまで用いる。（めっちゃおもしろ
+compact :: Doc -> String                
+compact x = transform [x]
   where transform [] = ""
         transform (d:ds) = 
           case d of
@@ -74,6 +75,7 @@ compact x = transform x
             Line -> '\n' : transform ds
             a `Concat` b -> transform(a:b:ds)
             _ `Union` b -> transform(b:ds)
+
 
         
 --doc値の区切り文字を入れる。  
