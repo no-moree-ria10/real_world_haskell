@@ -2,9 +2,7 @@
 --Prettyfyモジュールのスタブを作ってPrettyfy.hsをテストする。
 module PrettyStub where
 import SimpleJSON
-
-data Doc = ToBeDefined
-           deriving(Show)
+import Prettyfy
                    
 --string:: String->Doc
 --string str = undefined
