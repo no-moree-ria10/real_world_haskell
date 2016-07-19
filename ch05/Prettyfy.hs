@@ -34,7 +34,27 @@ line = Line
 Empty <> y = y
 x <> Empty = x
 x <> y = x `Concat` y
-       
+
+--[Doc]を一つのDocに連結(concat)
+hcat ::[Doc] -> Doc
+hcat = fold (<>)
+
+--Emptyに対する畳み込み(上で使う）
+fold :: (Doc -> Doc -> Doc) -> [Doc] -> Doc
+fold f = foldr f empty
+
+--Doc値のリストを合成し、出力が単一行に入りきらない場合行を折り返す
+fsep ::[Doc] ->Doc
+fsep  = fold (</>)
+
+(</>) :: Doc -> Doc -> Doc  --折り返し関数
+x </> y = x <> softline <> y
+
+softline :: Doc  --柔らかい改行
+softline = group line
+
+group = undefined           
+           
 --doc値の区切り文字を入れる。  
 punctuate:: Doc -> [Doc] -> [Doc]
 punctuate p [] = []
@@ -43,11 +63,3 @@ punctuate p (d:ds) = (d <> p) : punctuate p ds
 
 
 
---Stubs                     
-
-fsep ::[Doc] ->Doc
-fsep xs = undefined --Doc値のリストを合成し、出力が単一行に入りきらない場合行を折り返す。
-
---[Doc]を一つのDocに連結(concat)
-hcat ::[Doc] -> Doc
-hcat xs = undefined
