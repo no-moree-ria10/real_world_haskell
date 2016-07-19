@@ -8,7 +8,7 @@ import Numeric(showHex)
 import Data.Bits(shiftR, (.&.))
 import Data.Char(ord)
 import SimpleJSON(JValue(..))
-import Prettyfy
+import Prettyfy(Doc , (<>), char, double, fsep, hcat, punctuate, text, compact, pretty)
 --data type Doc
 --data Doc = ToBeDefined deriving(Show)
 --renderJvalue
@@ -37,7 +37,7 @@ oneChar:: Char -> Doc
 oneChar c = case lookup c simpleEscapes of Just r -> text r
                                            Nothing | mustEscape c->hexEscape c
                                                    | otherwise -> char c
-                                           where mustEscape c = c < ' ' || c =='\x7f' || c > '\xff' -- if c == ASCII  -> true
+                                           where mustEscape c = c < ' ' || c =='\x7f' || c > '\xff' -- if c == ASCII  -> else
 --改行文字などを出力するためにchar(\n) -> String("/n")という文字列に変換するための連想配列                                               
 simpleEscapes :: [(Char, String)] 
 simpleEscapes = zipWith ch "\b\n\f\r\t\\\"/" "bnfrt\\\"/"
