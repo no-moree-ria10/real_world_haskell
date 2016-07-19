@@ -7,6 +7,7 @@ import Numeric(showHex)
 import Data.Bits(shiftR, (.&.))
 import Data.Char(ord)
 
+
   
 --[start]String -> Doc変換関数
 --Doc文字列はクォートされた文字の列
