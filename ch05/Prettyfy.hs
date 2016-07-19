@@ -64,6 +64,7 @@ flatten (x `Union` _ ) = flatten x
 flatten other = other 
 
 --transform で x::Docをスタックに入れ、Comcat v1 v2があった場合はスタックに積む。文字・文字列・改行文字をそれぞれ文字に置き換えながらスタックが空になるまで用いる。（めっちゃおもしろ
+--機械が読むための最小の文字列を出力する
 compact :: Doc -> String                
 compact x = transform [x]
   where transform [] = ""
@@ -76,7 +77,24 @@ compact x = transform [x]
             a `Concat` b -> transform(a:b:ds)
             _ `Union` b -> transform(b:ds)
 
+--人間が読むための最小の文字列をサポートする。
+--Int : 最大のカラム幅、softlineに合うまでにこの数値を超えていたらunionは右をとる。超えていなかったら左をとる。     
+pretty:: Int -> Doc -> String
+pretty width x = best 0 [x]
+  where best col (d:ds) = --col:今までの文字列の長さを測るローカル変数
+          case d of 
+            Empty -> best col ds
+            Char c -> c : best (col + 1) ds
+            Text s -> s ++ best (col + length s) ds
+            Line -> '\n' : best 0 ds
+            a `Concat` b -> best col ( a : b : ds)
+            a `Union` b -> nicest col (best col (a:ds)) (best col (b:ds) )
+            where nicest col a b | (width - least) `fits` a = a 
+                                 | otherwise = b
+                    where least = min width col
 
+fits :: Int -> String-> Bool
+fits = undefined
         
 --doc値の区切り文字を入れる。  
 punctuate:: Doc -> [Doc] -> [Doc]
