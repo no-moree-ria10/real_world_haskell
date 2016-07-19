@@ -4,9 +4,8 @@ module PrettyJSON(
   renderJValue
   )where
 --import
-import PrettyStub
 import SimpleJSON(JValue(..))
-import Prettyfy(Doc , (<>), char, double, fsep, hcat, punctuate, text, compact, pretty)
+import Prettyfy(Doc , (<>), char, double, fsep, hcat, punctuate, text, compact)--, pretty)
 --data type Doc
 --data Doc = ToBeDefined deriving(Show)
 --renderJvalue
