@@ -1,21 +1,19 @@
 -- file: ch11/Run.hs
 
 import Prettify2
-import Test.QuickCheck.All
+import Test.QuickCheck.All  
+import Test.QuickCheck
 
-options = TestOptions
-  { no_of_tests = 200
-  , length_of_tests = 1 
-  , debug_tests = False }
   
 main = do
-  runTests "simple" options
-    [ run prop_empty_id
-    , run prop_char
-    , run prop_text
-    , run prop_line
-    , run prop_double_d ]
+  
+    quickCheck prop_empty_id
+    quickCheck prop_char
+    quickCheck prop_text
+    quickCheck prop_line
+    quickCheck prop_double_d 
   
      
                   
                      
+  
