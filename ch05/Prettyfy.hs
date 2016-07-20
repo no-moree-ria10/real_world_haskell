@@ -8,7 +8,7 @@ data Doc = Empty
            |Line  -- imply \n 
            |Concat Doc Doc --tree
            |Union Doc Doc -- tree
-            deriving(Show)
+            deriving(Show, Eq)
 --constructer 
 empty :: Doc
 empty = Empty
