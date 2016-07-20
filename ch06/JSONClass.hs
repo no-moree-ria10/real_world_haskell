@@ -7,7 +7,6 @@ module JSONClass
          JAry(..)
        )where
 
-import SimpleJSON
 
 data JValue = JString String 
             | JNumber Double 
@@ -87,4 +86,15 @@ jaryFromJValue ( JArray (JAry a) ) =
   whenRitht JAry (mapEithers fromJValue a)
 jaryFromJValue _ = Left "not a JSON array"
 
-whenRitht ::
+whenRitht ::   (r -> a) -> Either l r -> Either l a
+whenRitht f (Right x) = Right $ f x            
+whenRitht _ (Left y) = Left y
+                       
+mapEithers :: (a -> Either l r) -> [a] -> Either l [r]
+mapEithers f (x:xs) =  case mapEithers f xs of
+  Left err -> Left err
+  Right ys -> case f x of
+    Left err -> Left err
+    Right y -> Right (y :ys)
+mapEithers _ _ = Right []                  
+--[end]
