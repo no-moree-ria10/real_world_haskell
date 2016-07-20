@@ -2,9 +2,21 @@
 {-# LANGUAGE TypeSynonymInstances #-} --型パラメータを具体化したデータ型を型クラスのinstanceにするのを許す言語拡張
 {-# LANGUAGE FlexibleInstances #-}
 
-module JSONClass where
+module JSONClass 
+       (
+         JAry(..)
+       )where
 
-import SimpleJSON 
+import SimpleJSON
+
+data JValue = JString String 
+            | JNumber Double 
+            | JBool Bool 
+            | JNull 
+            | JObject (JObj JValue) --was JObject [ ( String, JValue ) ] 
+            | JArray (JAry JValue) --was JArray [JValue]            
+            deriving (Eq, Ord, Show)
+  
 type JSONError = String
 
 class JSON a where
@@ -43,3 +55,10 @@ instance JSON Double where
   toJValue = JNumber
   fromJValue = doubleToJValue id
   
+newtype JAry a = JAry{
+  fromJAry :: [a] 
+  } deriving(Eq, Ord, Show)
+
+newtype JObj a = JObj{            
+  fromJObj :: [(String,a)]
+  } deriving(Eq, Ord, Show)
