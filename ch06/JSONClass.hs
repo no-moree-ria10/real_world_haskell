@@ -1,5 +1,7 @@
 -- file: ch06/JSONClass.hs
-import SimpleJSON
+module JSONClass where
+
+import SimpleJSON 
 type JSONError = String
 
 class JSON a where
