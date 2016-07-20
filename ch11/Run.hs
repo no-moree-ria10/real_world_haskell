@@ -1,7 +1,7 @@
 -- file: ch11/Run.hs
 
 import Prettify2
-import Test.QuickCheck.Batch
+import Test.QuickCheck.All
 
 options = TestOptions
   { no_of_tests = 200
