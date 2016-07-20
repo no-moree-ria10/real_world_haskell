@@ -7,6 +7,7 @@ module JSONClass
          JAry(..)
        )where
 
+import Control.Arrow(second)
 
 data JValue = JString String 
             | JNumber Double 
@@ -89,7 +90,7 @@ jaryFromJValue _ = Left "not a JSON array"
 whenRitht ::   (r -> a) -> Either l r -> Either l a
 whenRitht f (Right x) = Right $ f x            
 whenRitht _ (Left y) = Left y
-                       
+                                              
 mapEithers :: (a -> Either l r) -> [a] -> Either l [r]
 mapEithers f (x:xs) =  case mapEithers f xs of
   Left err -> Left err
@@ -98,3 +99,12 @@ mapEithers f (x:xs) =  case mapEithers f xs of
     Right y -> Right (y :ys)
 mapEithers _ _ = Right []                  
 --[end]
+
+--[start] instance JObj
+instance (JSON a) => JSON (JObj a)where
+  toJValue =JObject. JObj. map (second toJValue) .fromJObj
+  fromJValue (JObject (JObj o) ) = whenRitht JObj (mapEithers unwrap o)
+    where unwrap (k,v) = whenRight ((,) k) (fromJValue v)          
+  fromJValue _ = Left "not a JSON Object"
+
+                                            
