@@ -1,0 +1,1 @@
+-- file: ch06/BrokenClass.hs
