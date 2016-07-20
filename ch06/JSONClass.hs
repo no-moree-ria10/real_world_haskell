@@ -68,7 +68,8 @@ jaryToJValue ::(JSON a) => JAry a -> JValue
 instance (JSON a) => JSON (JAry a) where
   toJValue = jaryToJValue
   fromJValue = jaryFromJValue
-  
+
+--[start] jaryToJValue  
 listToJValues :: (JSON a) => [a] -> [JValue]
 listToJValues = map toJValue
 
@@ -79,4 +80,11 @@ jaryOfJValuesToJValue :: JAry JValue -> JValue
 jaryOfJValuesToJValue = JArray
 
 jaryToJValue =  jaryOfJValuesToJValue . jvaluesToJary . listToJValues . fromJAry
+--[end]
 
+--[start] jaryfromjvalue                
+jaryFromJValue ( JArray (JAry a) ) =
+  whenRitht JAry (mapEithers fromJValue a)
+jaryFromJValue _ = Left "not a JSON array"
+
+whenRitht ::
