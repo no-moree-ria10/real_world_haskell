@@ -10,6 +10,17 @@ import Text.Regex.Posix ((=~))
 globToRegex :: String -> String 
 globToRegex cs = '^' : globToRegex' cs ++"$"
 
-globToRegex' = undefined
+globToRegex' :: String -> String                 
+globToRegex' "" = ""
+globToRegex' ('*':cs) = ".*" ++ globToRegex' cs
+globToRegex' ('?':cs) = '.' : globToRegex' cs
+globToRegex' ('[':'!':c:cs) ="[^" ++ c : charClass cs
+globToRegex' ('[':c:cs) ='[' : c : charClass cs
+globToRegex' ('[':_) = error "unterminated character class"
+globToRegex' (c:cs) = escape c ++ globToRegex' cs
 
+escape =undefined
+charClass = undefined
+                      
+                         
 matchesGlob =undefined
