@@ -1,4 +1,6 @@
--- file: ch11/QC-basics.hs
+-- file: ch11/QCbasics.hs
+module QCbasics where
+
 import Test.QuickCheck
 import Test.QuickCheck.All
 import Data.List
