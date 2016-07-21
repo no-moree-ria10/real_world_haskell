@@ -39,18 +39,17 @@ mainWithOpts = do
 
 tests = [
         testGroup "Sorting Group 1" [
-           testProperty "idempotent" prop_idempotent :: ,
-           testProperty "minimum2" prop_minimum,
-           testProperty "ordered3" prop_ordered
+           testProperty "idempotent" (prop_idempotent::[Int] -> Bool ) ,
+           testProperty "minimum2" (prop_minimum::[Int] -> Property ) ,
+           testProperty "ordered3" (prop_ordered::[Int] -> Bool ) 
            ],
         testGroup "Sorting Group 2" [
           testGroup "Nested Group 1" [
-             testProperty "permutation" prop_permutation,
-             testProperty "maximaum" prop_maximaum
+             testProperty "permutation" (prop_permutation::[Int] -> Bool ) ,
+             testProperty "maximaum" (prop_maximaum::[Int] -> Property ) 
              ],
-          testProperty "append" prop_append,
-          testProperty "sort-model" prop_sort_model
-          ]
+          testProperty "append" (prop_append::[Int] -> [Int]-> Property ) ,
+          testProperty "sort-model" (prop_sort_model::[Int] -> Bool )           ]
         ]
 
   
