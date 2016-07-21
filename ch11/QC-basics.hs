@@ -1,5 +1,6 @@
 -- file: ch11/QC-basics.hs
 import Test.QuickCheck
+import Test.QuickCheck.All
 import Data.List
 
 qsort:: Ord a => [a] -> [a]
@@ -21,3 +22,7 @@ prop_append xs ys = not (null xs) ==> not (null ys) ==>
                     head ( qsort (xs ++ ys) ) == min (minimum xs) (minimum ys)
 prop_sort_model xs = sort xs == qsort xs
 
+--return []
+runTests = do 
+  return []
+  $verboseCheckAll
