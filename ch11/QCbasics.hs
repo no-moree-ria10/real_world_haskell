@@ -16,7 +16,7 @@ prop_minimum xs = not (null xs) ==> head (qsort xs) == minimum xs
 prop_ordered xs = ordered (qsort xs)
   where ordered [] = True
         ordered [x] = True
-        ordered [x:y:xs] = x <= y && ordered [y:xs]
+        ordered (x:y:xs) = x <= y && ordered (y:xs)
 prop_permutation xs = permutation xs (qsort xs)        
   where permutation xs ys = null (xs \\ ys) && null (ys \\xs)
 prop_maximaum xs = not (null xs) ==> last(qsort xs) == maximum xs         
