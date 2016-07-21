@@ -3,12 +3,9 @@
 import Prettify2
 import Test.QuickCheck.All  
 import Test.QuickCheck
-import QC-basics
+import QCbasics
   
 main = do
-  runTests
-    
-    
   
      
                   
