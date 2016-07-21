@@ -39,7 +39,7 @@ mainWithOpts = do
 
 tests = [
         testGroup "Sorting Group 1" [
-           testProperty "idempotent" prop_idempotent,
+           testProperty "idempotent" prop_idempotent :: ,
            testProperty "minimum2" prop_minimum,
            testProperty "ordered3" prop_ordered
            ],
