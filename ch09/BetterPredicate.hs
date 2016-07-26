@@ -10,6 +10,8 @@ import Control.Exception (bracket, handle)
 import System.IO (IOMode(..), hClose, hFileSize, openFile)
 --以前書いた関数
 import RecursiveContents (getRecursiveContents)
+--Exception Tipe Signature用
+import GHC.Exception
 
 type Predicate = FilePath --ディレクトリエントリへのパス
                  -> Permissions
@@ -35,4 +37,11 @@ simpleFileSize path = do
   size <- hFileSize h
   hClose h
   return size
+  
+saferFileSize :: FilePath -> IO (Maybe Integer)
+saferFileSize path =  handle ( (\_ -> return Nothing ) :: SomeException-> IO ( (Maybe Integer)) )$ do  --例外の型が不明なこととNothingの型が不明なことから注釈が必要
+  h <- openFile path ReadMode
+  size <- hFileSize h
+  hClose h
+  return (Just size)
   
