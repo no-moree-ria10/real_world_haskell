@@ -1,5 +1,6 @@
 {-# OPTIONS_GHC -cpp #-}
 -- file: ch09/BetterPredicate.hs
+module BetterPredicate () where
 
 import Control.Monad (filterM)
 import System.Directory ( Permissions(..), getModificationTime, getPermissions) 
@@ -26,5 +27,12 @@ betterFind p path = getRecursiveContents path >>= filterM check
           size <- getFileSize name
           modified <- getModificationTime name
           return (p name perms size modified )
-          
-          
+        
+        
+simpleFileSize :: FilePath -> IO Integer
+simpleFileSize path = do
+  h <- openFile path ReadMode
+  size <- hFileSize h
+  hClose h
+  return size
+  
