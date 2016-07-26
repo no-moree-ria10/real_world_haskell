@@ -20,7 +20,6 @@ type Predicate = FilePath --ディレクトリエントリへのパス
                  -> Bool  --純粋なことに注意する
 
 getFileSize :: FilePath -> IO ( Maybe Integer )
-getFileSize = undefined
 betterFind :: Predicate -> FilePath -> IO [FilePath]
 
 betterFind p path = getRecursiveContents path >>= filterM check
@@ -45,3 +44,9 @@ saferFileSize path =  handle ( (\_ -> return Nothing ) :: SomeException-> IO ( (
   hClose h
   return (Just size)
   
+--獲得ー使用ー開放サイクル　（確実にファイルハンドラを閉じる方法）
+getFileSize path = handle ( (\_ -> return Nothing ) :: SomeException-> IO ( (Maybe Integer)) )$   --例外の型が不明なこととNothingの型が不明なことから注釈が必要
+                   bracket (openFile path ReadMode) hClose $ \h -> do
+                     size <- hFileSize h
+                     return (Just size)
+                             
