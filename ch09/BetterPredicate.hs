@@ -49,4 +49,7 @@ getFileSize path = handle ( (\_ -> return Nothing ) :: SomeException-> IO ( (May
                    bracket (openFile path ReadMode) hClose $ \h -> do
                      size <- hFileSize h
                      return (Just size)
-                             
+
+myTest path _ (Just size) _ =                        
+  takeExtension path == ".cpp" && size > 131072
+myTest _ _ _ _ = False
