@@ -50,6 +50,29 @@ getFileSize path = handle ( (\_ -> return Nothing ) :: SomeException-> IO ( (May
                      size <- hFileSize h
                      return (Just size)
 
-myTest path _ (Just size) _ =                        
+--引数が多すぎるのに２つしか使わない。また、等式が２つ必要。DSLを作って改善する
+myTest path _ (Just size) _ =                      
   takeExtension path == ".cpp" && size > 131072
 myTest _ _ _ _ = False
+
+--引数の１つを返す関数
+type InfoP a = FilePath                 
+               -> Permissions
+               -> Maybe Integer
+               -> UTCTime
+               -> a               
+pathP :: InfoP FilePath               
+pathP path _ _ _ = path
+
+sizeP :: InfoP Integer                   
+sizeP _ _ (Just size) _  = size
+sizeP _ _ Nothing _ = -1  -- nothingの時は-1にすることで表現
+
+--InfoP Bool はPredicate                      
+--返り値は Predicate、つまり述語を取る
+equalP :: (Eq a) => InfoP a -> a -> InfoP Bool
+equalP f k = \w x y z -> f w x y z == k
+
+--equalP' （別実装例、ラムダ式を使わないバージョン
+equalP' :: (Eq a) => InfoP a-> a -> InfoP Bool
+equalP' f k w x y z = f w x y z == k
