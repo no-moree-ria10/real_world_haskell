@@ -76,3 +76,15 @@ equalP f k = \w x y z -> f w x y z == k
 --equalP' （別実装例、ラムダ式を使わないバージョン
 equalP' :: (Eq a) => InfoP a-> a -> InfoP Bool
 equalP' f k w x y z = f w x y z == k
+
+--equqlのような勢いで 大小　などを示す関数を作ることもできるが、不必要に冗長。よって二項関数を渡してそれをつかって述語を作る。
+liftP :: ( a -> b -> c ) -> InfoP a -> b -> InfoP c
+liftP q f k w x y z = f w x y z `q` k 
+
+--別の関数を採って別の文脈で作用する関数を返すとき、別の文脈に「持ち上げる」という。liftPを用いてgreater , lesser を作る
+greaterP, lesserP :: (Ord a) => InfoP a -> a -> InfoP Bool
+greaterP = liftP (>)
+lesserP = liftP (<)
+
+--次は真理値演算子の持ち上げに使う関数
+--liftP2
