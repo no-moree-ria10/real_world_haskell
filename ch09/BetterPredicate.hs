@@ -79,7 +79,8 @@ equalP' f k w x y z = f w x y z == k
 
 --equqlのような勢いで 大小　などを示す関数を作ることもできるが、不必要に冗長。よって二項関数を渡してそれをつかって述語を作る。
 liftP :: ( a -> b -> c ) -> InfoP a -> b -> InfoP c
-liftP q f k w x y z = f w x y z `q` k 
+--liftP q f k w x y z = f w x y z `q` k 
+liftP  q f k w x y z = liftP2 q f (\_ _ _ _ -> k  ) w x y z -- use LiftP2
 
 --別の関数を採って別の文脈で作用する関数を返すとき、別の文脈に「持ち上げる」という。liftPを用いてgreater , lesser を作る
 greaterP, lesserP :: (Ord a) => InfoP a -> a -> InfoP Bool
@@ -87,4 +88,8 @@ greaterP = liftP (>)
 lesserP = liftP (<)
 
 --次は真理値演算子の持ち上げに使う関数
---liftP2
+liftP2 :: (a -> b -> c) -> InfoP a -> InfoP b -> InfoP c
+liftP2 q f g w x y z = f w x y z `q` g w x y z 
+andP2 = liftP2 (&&)
+orP = liftP2 (||)
+
