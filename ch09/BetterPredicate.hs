@@ -55,11 +55,15 @@ myTest path _ (Just size) _ =
   takeExtension path == ".cpp" && size > 131072
 myTest _ _ _ _ = False
 
+--mytest using liftP2 and more...                 
 liftPath :: ( FilePath -> a) -> InfoP a
 liftPath f w _ _ _ =  f w
 
 myTest2 =  ( liftPath takeExtension `equalP` ".cpp" ) `andP` ( sizeP `greaterP` 131072)
 
+--mytest3           
+myTest3 = (liftPath takeExtension ==? ".cpp") &&? (sizeP >? 131072)
+           
 --引数の１つを返す関数
 type InfoP a = FilePath                 
                -> Permissions
@@ -97,4 +101,9 @@ liftP2 :: (a -> b -> c) -> InfoP a -> InfoP b -> InfoP c
 liftP2 q f g w x y z = f w x y z `q` g w x y z 
 andP = liftP2 (&&)
 orP = liftP2 (||)
+
+--中置演算子を作る
+(==?) = equalP
+(&&?) = andP
+(>?) = greaterP
 
