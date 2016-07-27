@@ -63,7 +63,10 @@ myTest2 =  ( liftPath takeExtension `equalP` ".cpp" ) `andP` ( sizeP `greaterP` 
 
 --mytest3           
 myTest3 = (liftPath takeExtension ==? ".cpp") &&? (sizeP >? 131072)
-           
+--mytest4 演算の優先順を下で定義したため、カッコが不要になる
+myTest4 = liftPath takeExtension ==? ".cpp" &&? sizeP >? 131072
+
+          
 --引数の１つを返す関数
 type InfoP a = FilePath                 
                -> Permissions
@@ -106,4 +109,7 @@ orP = liftP2 (||)
 (==?) = equalP
 (&&?) = andP
 (>?) = greaterP
-
+--演算優先順位を建てる
+infix 4 ==?
+infixr 3 &&?
+infix 4 >?
