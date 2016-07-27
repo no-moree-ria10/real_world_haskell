@@ -55,6 +55,11 @@ myTest path _ (Just size) _ =
   takeExtension path == ".cpp" && size > 131072
 myTest _ _ _ _ = False
 
+liftPath :: ( FilePath -> a) -> InfoP a
+liftPath f w _ _ _ =  f w
+
+myTest2 =  ( liftPath takeExtension `equalP` ".cpp" ) `andP` ( sizeP `greaterP` 131072)
+
 --引数の１つを返す関数
 type InfoP a = FilePath                 
                -> Permissions
@@ -90,6 +95,6 @@ lesserP = liftP (<)
 --次は真理値演算子の持ち上げに使う関数
 liftP2 :: (a -> b -> c) -> InfoP a -> InfoP b -> InfoP c
 liftP2 q f g w x y z = f w x y z `q` g w x y z 
-andP2 = liftP2 (&&)
+andP = liftP2 (&&)
 orP = liftP2 (||)
 
