@@ -18,9 +18,17 @@ data Info = Info {
   , infoModTime :: Maybe UTCTime
   } deriving (Eq, Ord, Show)
 
+
+maybeIO :: IO a -> IO (Maybe a)             
+maybeIO act = handle ( ( \_ -> return Nothing ):: SomeException-> IO ( (Maybe a)) )  (Just `liftM` act)
 --与えれたディレクトリの情報             
-getInfo :: FilePath -> IO Info             
-getInfo = undefined
+getInfo :: FilePath -> IO Info      
+getInfo path = do
+  perms <- maybeIO (getPermissions path)
+  size <- maybeIO ( bracket (openFile path ReadMode) hClose hFileSize )
+  modified <- maybeIO (getModificationTime path)
+  return ( Info path perms size modified)          
+  
 traverse :: ( [Info] -> [Info] ) -> FilePath -> IO [Info] 
 traverse order path = do 
   names <- getUseFulContents path
